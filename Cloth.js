@@ -90,7 +90,7 @@ function Cloth(resolution, k, width) {
     this.randomForce = function() {
         for (i=0; i<this.vertex_count; i++) {
             if (Math.random() > 0.5) {
-                this.externalForces[i][0] = Math.rando() - 0.5;              
+                this.externalForces[i][0] = Math.random() - 0.5;              
                 this.externalForces[i][1] = Math.random() - 0.5;
                 this.externalForces[i][2] = Math.random() - 0.5;
                 
