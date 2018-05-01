@@ -23,53 +23,6 @@ var deltaR;
 // For setting
 var WireFrame = true;
 
-// For shuffling
-var shuffles = [];
-
-// Mapping between keys and direction
-var keys2Dir = new Map();
-keys2Dir.set("j", vec3(0, 0, 1));
-keys2Dir.set("l", vec3(0, 0, -1));
-keys2Dir.set("i", vec3(0, 1, 0));
-keys2Dir.set("k", vec3(0, -1, 0));
-keys2Dir.set("u", vec3(1, 0, 0));
-keys2Dir.set("o", vec3(-1, 0, 0));
-keys2Dir.set("J", vec3(0, 0, 1));
-keys2Dir.set("L", vec3(0, 0, -1));
-keys2Dir.set("I", vec3(0, 1, 0));
-keys2Dir.set("K", vec3(0, -1, 0));
-keys2Dir.set("U", vec3(1, 0, 0));
-keys2Dir.set("O", vec3(-1, 0, 0));
-
-keys2Dir.set("a", vec3(0, 0, 1));
-keys2Dir.set("d", vec3(0, 0, -1));
-keys2Dir.set("w", vec3(0, 1, 0));
-keys2Dir.set("s", vec3(0, -1, 0));
-keys2Dir.set("q", vec3(1, 0, 0));
-keys2Dir.set("e", vec3(-1, 0, 0));
-keys2Dir.set("A", vec3(0, 0, 1));
-keys2Dir.set("D", vec3(0, 0, -1));
-keys2Dir.set("W", vec3(0, 1, 0));
-keys2Dir.set("S", vec3(0, -1, 0));
-keys2Dir.set("Q", vec3(1, 0, 0));
-keys2Dir.set("R", vec3(-1, 0, 0));
-
-var keysArray = [];
-for (var key of keys2Dir.keys()) {
-    keysArray.push(key);
-}
-
-var vertices = [
-        vec4( -0.5, -0.5,  0.5, 1.0 ),
-        vec4( -0.5,  0.5,  0.5, 1.0 ),
-        vec4( 0.5,  0.5,  0.5, 1.0 ),
-        vec4( 0.5, -0.5,  0.5, 1.0 ),
-        vec4( -0.5, -0.5, -0.5, 1.0 ),
-        vec4( -0.5,  0.5, -0.5, 1.0 ),
-        vec4( 0.5,  0.5, -0.5, 1.0 ),
-        vec4( 0.5, -0.5, -0.5, 1.0 )
-    ];
-
 var lightPosition = vec4(1.0, 1.0, 1.0, 0.0 );
 var lightAmbient = vec4(0.2, 0.2, 0.2, 1.0 );
 var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
@@ -150,15 +103,9 @@ window.onload = function init() {
     program = initShaders( gl, "vertex-shader", "fragment-shader" );
     gl.useProgram( program );
 
+    // Initialize cloth
     cloth = new Cloth(50, 0.5, 2);
     numVertices = cloth.indCount;
-    
-
-    //initCubes();
-    //renderCubes();
-    
-
-    //thetaLoc = gl.getUniformLocation(program, "theta");
 
     viewerPos = vec3(0.0, 0.0, -20.0 );
 
@@ -182,12 +129,6 @@ window.onload = function init() {
     document.getElementById("WireFrame").onchange = function() {
         WireFrame = document.getElementById("WireFrame").checked;
     };
-
-    /*
-    document.getElementById("Resistance").onchange = function() {
-        cloth.hasResist = document.getElementById("Resistance").checked;
-    };
-    */
     
     gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"),
        flatten(ambientProduct));
@@ -207,18 +148,6 @@ window.onload = function init() {
     render();
     renderCloth();
 }
-
-var shuffle = function() {
-    console.log(shuffles.length);
-    if (shuffles.length == 0) return;
-
-    var a = shuffles.pop();
-    var reverse = Math.random < 0.5? true : false;
-
-    rotateSide(a, reverse);
-}
-
-
 
 var isArrayEqual = function(a, b) {
     if (a.length != b.length) {

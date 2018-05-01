@@ -1,4 +1,5 @@
-function Cloth(resolution, k, width) {
+function Cloth(resolution, k, width) 
+{
     
     this.resolution = resolution;
     this.vertices = [];
@@ -17,7 +18,8 @@ function Cloth(resolution, k, width) {
     
     this.gravity = vec3(0, -0.00001, 0);
     
-    for (i=0; i<this.vertex_count; i++) {
+    for (i=0; i<this.vertex_count; i++) 
+    {
         this.forces.push(vec3(0,0,0));
         this.externalForces.push(vec3());
         this.vel.push(vec3());
@@ -55,7 +57,8 @@ function Cloth(resolution, k, width) {
         this.pos.push(this.vertices[botleft]);
     }
     
-    this.updateForces = function() {
+    this.updateForces = function() 
+    {
         for (i=0; i<this.vertex_count; i++) {
             rawI = Math.floor(i/this.resolution);
             colI = i%this.resolution;
@@ -86,8 +89,10 @@ function Cloth(resolution, k, width) {
             this.externalForces[i] = vec3();
         }
     }
-       
-    this.randomForce = function() {
+    
+    // Add random forces
+    this.randomForce = function() 
+    {
         for (i=0; i<this.vertex_count; i++) {
             if (Math.random() > 0.5) {
                 this.externalForces[i][0] = Math.random() - 0.5;              
@@ -99,7 +104,8 @@ function Cloth(resolution, k, width) {
         }
     }
 
-    this.updateVel = function() {
+    this.updateVel = function() 
+    {
         this.updateForces();
         momentum = vec3();
         for (i=0; i<this.vertex_count ;i++) {
@@ -122,7 +128,9 @@ function Cloth(resolution, k, width) {
         this.momentum = vec3();
     }
     
-    this.updatePos = function() {
+    // Update position
+    this.updatePos = function() 
+    {
         this.updateVel();
         for (i=0; i<this.vertex_count - this.resolution; i++) {
             move = this.vel[i];
@@ -134,7 +142,9 @@ function Cloth(resolution, k, width) {
         }
     }
     
-    this.wind = function() {
+    // Simulate wind
+    this.wind = function() 
+    {
         for (i=0; i<this.vertex_count; i++) {
             momz = -0.0005 * Math.random();
             this.externalForces[i] = vec3(0, 0, momz);
